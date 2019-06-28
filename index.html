@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"/>
+ <title>UNEVIL Credit Card Company</title>
+ <link media='screen' href='css/fhcc.css' type='text/css' rel='stylesheet' />
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+ <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+ <script src="js/svg.js"></script>
+ <script src="js/jquery-1.6.4.min.js"></script>
+ <script src="js/svglib.js"></script>
+ <script src="js/ccdata.js"></script>
+</head>
+<body>
+<div id='cont'>
+<div id='header'>
+<h1></h1>
+<h3>Credit Card #4000 1234 5678 9101</h3>
+<h3>March 15<sup>th</sup>, 2011</h3>
+</div>
+<div id='main'>
+<div class='w1'><h2>Important notices</h2>
+<div class='fraud' id='fid36' onclick='GCC.showTransactionDetails.apply(this)'><a href='#MHA'> You have a purchase that is likely fraudulent and needs your attention.</a></div>
+<div class='warn' id='fid29' onclick='GCC.showTransactionDetails.apply(this)'><a href='#MHA'>You have a purchase that is potentially fraudulent and should be checked.</a></div>
+<div class='warn'>Your credit card balance of <strong>$1,223.91</strong> is due in 5 days.</div>
+</div>
+
+<div class='w1'>
+<div class='sbox'>Balance due:<br><strong>$1,223.91</strong></div>
+<div class='sbox'>Due date:<br><strong>March 20, 2011</strong></div>
+<div class='sbox'>Minimum Payment:<br><strong>$60.00</strong></div>
+<div class='sbox'>Total Balance:<br><strong>$1,487.39</strong></div>
+</div>
+
+<div class='w1'><h2>Transactions <select id='tran_month_sel'></select></h2>
+
+<table>
+<thead><tr><td>Merchant</td><td>Date (D/M/Y)</td><td>Time</td><td>Location</td><td>Amount ($)</td></tr></thead>
+<tbody class='bill' id='m12011' ></tbody>
+<tbody  class='bill' id='m22011' ></tbody>
+<tbody  class='bill' id='m32011' ></tbody>
+</table>
+
+</div>
+
+<div class='w2'><h2>Transaction locations</h2>
+<div id='map'></div>
+</div>
+<div id='MHA' class='w2'><h2>Merchant history &amp; actions</h2>
+<div id='tinfo'>
+
+</div>
+</div>
+
+<div class='w1'><h2>History of transactions, payments and due dates</h2>
+<style type='text/css'>
+
+svg .p {
+	stroke: #006;
+	stroke-width: 4;
+	opacity: 0.4;
+}
+
+svg .p:hover {
+	stroke: #600;
+	cursor: pointer;
+}
+
+svg#ttsvg rect {
+	fill: none;
+	stroke: none;
+	opacity: 0.2;
+}
+
+svg .m {
+	fill: #ddf;
+}
+
+svg .odd {
+	fill: #eef;
+}
+
+svg .pdl, svg .fdl, svg .pay {
+	stroke-width: 3px;
+	stroke: #f55;
+}
+
+svg .pay {
+	stroke: #6a6;
+}
+
+svg #janpayment {
+	stroke: #6a6;
+	fill: #6a6;
+}
+
+svg .due {
+	stroke: #f55;
+	fill: #f55;
+}
+
+svg .pdl {
+	stroke: #f55;
+	opacity: 0.5;
+}
+
+svg .std, svg .fade {
+	stroke: black;
+	stroke-width: 2px;
+}
+
+svg .fade, svg .amnt {
+	opacity: 0.2;
+}
+
+svg .tran {
+	fill: #a76;
+}
+
+svg .tranp {
+	fill: #779;
+}
+
+svg .tranf {
+	fill: #57a;
+}
+
+svg .tran:hover, svg .tranp:hover, svg .tranf:hover {
+	cursor: pointer;
+	fill: #773266;
+}
+
+
+svg text {
+	font-size: 13px;
+}
+
+.leaflet-control-attribution > a {
+    display: inline;
+}
+
+</style>
+
+<script type="image/svg+xml">
+<svg id='gssvg' width='820' height='200' viewBox='0 0 820 200'>
+<rect class='m' x='0' y='0' width='820' height='200'/>
+</svg>
+</script>
+
+</div>
+
+<div class='w1'><h2>Local time of day of transactions</h2>
+
+<script type="image/svg+xml">
+<svg id='ttsvg' width='820' height='100' viewBox='0 0 820 100'>
+ <defs>
+  <linearGradient id="bw-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+   <stop offset="20%" style="stop-color:rgb(0,0,0)"/>
+   <stop offset="30%" style="stop-color:rgb(255,255,255)"/>
+   <stop offset="70%" style="stop-color:rgb(255,255,255)"/>
+   <stop offset="80%" style="stop-color:rgb(0,0,0)"/>
+  </linearGradient>
+ </defs>
+<rect x='0' y='0' width='820' height='100' style='fill:url(#bw-grad)'/>
+<g id='gttsvg'> </g>
+
+<text class="" x="2" y="12">0</text>
+<text class="" x="201" y="12">6</text>
+<text class="" x="403" y="12">12</text>
+<text class="" x="604" y="12">18</text>
+<text class="" x="806" y="12">24</text>
+</svg>
+</script>
+
+</div>
+</div><!-- end of main -->
+<div id='footer' class='w1'>
+<p>Credit Cards are a service business like any other that have one purpose - making money. Unlike many other businesses however, credit card services have the ability to make a profit from your lack of money or debt. Credit card companies thrive on your debt and will employ many methods to maintain and increase your debt for their profit. I believe one of those methods is information fogging. My bank only provides monthly PDF statements and a current status which is woefully vague regarding when purchase are due to be paid and what amount will incur interest. I believe an information display system such as above could help individuals better understand and manage their current credit situation and better catch errors and fraud. It is not in a credit card companie's best interest to have you find a fraudulent charge.</p>
+<p>Cyrille M&eacute;dard de Chardon</p>
+</div>
+</div>
+</body>
+<script type='text/javascript'>
+
+//global object GCC (good credit card)
+var GCC = {
+	map: '',
+
+	//holds all the transactions info
+	transactions: {}
+}
+
+//create an informative chart of purchases
+GCC.createSvgChart = function () {
+	var max, min, f1, f2, range, d, t, n, tran, cw, ch, sum, nsum, paydate, jan_end, today, r, max_owing;
+
+	tran = GCC.transactions;
+
+	//get SVG canvas dimensions
+	cw = JSVG.getIntAttr('gssvg', 'width');
+	ch = JSVG.getIntAttr('gssvg', 'height');
+
+	//determine total date ranges
+	min = new Date(2011, 0, 1);
+	max = new Date(2011, 2, 22);
+	range = max - min;
+
+	//create rect for Feb. to zebra stripe
+	f1 = new Date(2011, 1, 1);
+	f2 = new Date(2011, 1, 29);
+
+	r = cw / range;
+	max_owing = 1600; //actually it's about 1480
+	sum = 0;
+	nsum = 0;
+
+	//create stripe for Feb.
+	JSVG.createRect('gssvg', 'fstripe', r * ( f1 - min ), 0, r * ( f2 - f1 ), ch, 'odd', {});
+
+	//show amount lines
+	JSVG.createLine('gssvg', 'd500', 0, ch - ch * ( 500 / max_owing ), cw, ch - ch * (500 / max_owing ), 'fade', {});
+	JSVG.createLine('gssvg', 'd100', 0, ch - ch * ( 1000 / max_owing ), cw, ch - ch * (1000 / max_owing ), 'fade', {});
+	JSVG.createLine('gssvg', 'd1500', 0, ch - ch * ( 1500 / max_owing ), cw, ch - ch * (1500 / max_owing ), 'fade', {});
+
+	//create date of pay and today
+	paydate = new Date(2011, 1, 13);
+	today = new Date(2011, 2, 15, 12);
+	jan_end = new Date(2011, 0, 31, 23, 59);
+	feb_end = new Date(2011, 1, 28, 23, 59);
+
+	//create the shapes for all the transactions
+	for ( n in tran ) {
+		t = tran[n]; //simplify!
+
+		//create date
+		d = t.d.split('/');
+		f1 = new Date(d[2], d[1] - 1, d[0]);
+
+		//draw rectangles of transactions that occur before payment date
+		if ( f1 < paydate ) {
+			sum = sum + ( ch * t.q / max_owing );
+			if ( f1 < jan_end ) {
+				JSVG.createRect('gssvg', 'pyd' + n, r * ( f1 - min ), ch - sum, r * ( paydate - f1 ), ch * t.q / max_owing, 'tranp', {click: GCC.showTransactionDetails});
+				//JSVG.createRect('gssvg', 'pyd' + n, r * ( f1 - min ), ch - sum, r * ( 24 * 60 * 60 * 1000 ), ch * t.q / max_owing, 'tranp', {click: GCC.showTransactionDetails});
+			} else {
+				JSVG.createRect('gssvg', 'pyd' + n, r * ( f1 - min ), ch - sum, r * ( paydate - f1 ), ch * t.q / max_owing, 'tran', {click: GCC.showTransactionDetails});
+				//JSVG.createRect('gssvg', 'pyd' + n, r * ( f1 - min ), ch - sum, r * ( 24 * 60 * 60 * 1000 ), ch * t.q / max_owing, 'tran', {click: GCC.showTransactionDetails});
+			}
+		}
+
+		//draw rectangles of transactions that occur after January
+		if ( f1 > jan_end ) {
+			nsum = nsum + ( ch * t.q / max_owing );
+
+			if ( f1 < paydate ) {
+				//create rectangles that span between payment and today
+				JSVG.createRect('gssvg', 'unp' + n, r * ( paydate - min ), ch - nsum, r * ( today - paydate ), ch * t.q / max_owing, 'tran', {click: GCC.showTransactionDetails});
+			} else if ( f1 < feb_end ) {
+				//span between purchase and today for February purchases
+				JSVG.createRect('gssvg', 'unp' + n, r * ( f1 - min ), ch - nsum, r * ( today - f1 ), ch * t.q / max_owing, 'tran', {click: GCC.showTransactionDetails});
+			} else {
+				//March purchases
+				JSVG.createRect('gssvg', 'unp' + n, r * ( f1 - min ), ch - nsum, r * ( today - f1 ), ch * t.q / max_owing, 'tranf', {click: GCC.showTransactionDetails});
+			}
+		}
+	}
+
+	//show payment deadlines (past and future) and payment dates
+	f1 = new Date(2011, 1, 20);
+	JSVG.createLine('gssvg', 'dl1', r * ( f1 - min ), 0, r * ( f1 - min ), ch, 'pdl', {});
+	f1 = new Date(2011, 2, 20);
+	JSVG.createLine('gssvg', 'dl2', r * ( f1 - min ), 0, r * ( f1 - min ), ch, 'fdl', {});
+	//payment
+	JSVG.createLine('gssvg', 'pay1', r * ( paydate - min ), 0, r * ( paydate - min ), ch, 'pay', {});
+
+	//show today
+	JSVG.createLine('gssvg', 'todayline', r * ( today - min ), 0, r * ( today - min ), ch, 'std', {});
+
+
+	//show text/axes
+	JSVG.createText('gssvg', 'mon1', 10, 30, 'January', '');
+	JSVG.createText('gssvg', 'mon2', 325, 30, 'February', '');
+	JSVG.createText('gssvg', 'mon3', 612, 30, 'March', '');
+
+	//horizontal axes
+	JSVG.createText('gssvg', 'guide15', 10, 9, '$1,500', 'amnt');
+	JSVG.createText('gssvg', 'guide10', 10, 72, '$1,000', 'amnt');
+	JSVG.createText('gssvg', 'guide05', 10, 134, '$500', 'amnt');
+
+	//payment text
+	JSVG.createText('gssvg', 'janpayment', 0, 0, 'payment', '');
+	JSVG.setAttr('janpayment','transform','translate(' + ( r *  ( paydate - min ) + 11 ) + ' 130) rotate(-90)');
+
+	//due date text
+	JSVG.createText('gssvg', 'paymentdue', 0, 0, 'balance due date', 'due');
+	JSVG.setAttr('paymentdue','transform','translate(' + ( r *  ( f1 - min ) + 14 ) + ' 155) rotate(-90)');
+
+	//today
+	JSVG.createText('gssvg', 'todaytext', 0, 0, 'today', '');
+	JSVG.setAttr('todaytext','transform','translate(' + ( r *  ( today - min ) + 14 ) + ' 128) rotate(-90)');
+}
+
+//show the transactions at a location
+GCC.showTransactionAtLocation = function (ll) {
+
+	var count, t, trans, loctrans, buildstring;
+
+	count = 0;
+	trans = GCC.transactions;
+	loctrans = {};
+
+	for ( t in trans ) {
+		if ( trans[t].ll === ll ) {
+			loctrans[count] = trans[t];
+			loctrans[count].n = t;
+			count = count + 1;
+		}
+	}
+
+	//update transaction info. pane
+	buildstring = '<h3>Transactions in ' + this.title + ':</h3>';
+	if ( count > 1 ) {
+		//multiple transactions at this location, create table
+		buildstring = buildstring + '<table>\n<thead><tr><td>Merchant</td><td>Date</td><td>Time</td><td>Location</td><td>Amount ($)</td></tr></thead>\n<tbody>';
+
+		for ( t in loctrans ) {
+			t = loctrans[t];
+			buildstring = buildstring + '<tr id="rid' + t.n + '" onclick="GCC.showTransactionDetails.apply(this)"><td>' + t.m + '</td><td>' + t.d + '</td><td>' + t.t + '</td><td>' + t.l + '</td><td>' + t.q + '</td></tr>';
+
+		}
+
+		buildstring = buildstring + '</tbody>\n</table>\n';
+
+		//update string in DOM
+		$('#tinfo').html(buildstring);
+	} else {
+		//only 1 merchant at this location, show details
+		GCC.showTransactionDetails.apply(document.getElementById('Tid' + loctrans[0].n));
+	}
+}
+
+//show the details/connections on ONE specific transaction
+GCC.showTransactionDetails = function () {
+	var tinfo, id, trans, tran, n, t, hist, hashist;
+
+	//get the id of the transaction
+	id = parseInt(this.id.slice(3), 10);
+
+
+	//import global object
+	trans = GCC.transactions;
+	tran = trans[id];
+
+	//build transaction into. string
+	tinfo = '<h3>' + tran.m + '</h3>\n' +
+		'<p>Date: <strong>' + tran.d + '</strong> (' + tran.t + ')<br>' +
+		'Location: <strong>' + tran.l + '</strong><br>' +
+		'Amount: <strong>$' + tran.q + '</strong></p>';
+
+	hist = 'Existing transactions with merchant:\n<table>\n<thead><tr><td>Date</td><td>Time</td><td>Location</td><td>Amount ($)</td></tr></thead>\n<tbody>';
+
+	for ( n in trans ) {
+		t = trans[n];
+		if ( t.m === tran.m && !(t.d === tran.d && t.t === tran.t)) {
+			hashist = true;	
+			hist = hist + '<tr id="rid' + n + '" onclick="GCC.showTransactionDetails.apply(this)"><td>' + t.d + '</td><td>' + t.t + '</td><td>' + t.l + '</td><td>' + t.q + '</td></tr>';
+		}
+	}
+
+	hist = hist + '<tbody>\n<table>\n';
+
+	if (!hashist) {
+		hist = '<p><em>First transaction with this merchant<em></p>';
+	}
+
+	//rate or take action against for this transaction
+	switch( tran.f) {
+ 		case 1:
+			hist = hist + '<p><strong>Rate your transaction with ' + tran.m + "</strong></p><img src='imgs/tup.png'> <img src='imgs/tdn.png'>";
+			break;
+
+		case 2:
+			//potential fraud
+			hist = hist + '<p class="warn">Your transaction with ' + tran.m + " has been flagged as potentially fraudulent.<br>Please take the appropriate action below:<br><input type='button' class='b' value='ALLOW transaction'><input type='button' class='b' value='STOP transaction'></p>";
+			break;
+		case 3:
+			//potential fraud
+			hist = hist + '<p class="fraud">Your transaction with ' + tran.m + " has been flagged as <strong>likely</strong> fraudulent.<br>Please take the appropriate action below:<br><input type='button' class='b' value='ALLOW transaction'><input type='button' class='b' value='STOP transaction'></p>";
+			break;
+	}
+
+	//update transaction info. pane
+	$('#tinfo').html(tinfo + hist);
+}
+
+//hide all tabular data and show the requested month
+GCC.displayMonth = function () {
+
+	//hide all
+	$('#m12011').hide();
+	$('#m22011').hide();
+	$('#m32011').hide();
+
+	//show selected
+	$('#m' + this.value).show();
+}
+
+// load transaction data into global JS object and prep panes as required with info
+GCC.loadData = function () {
+	var i, row, t, m, months, ms, geocoder, n, ll, trans, locs, marker;
+
+	months = {};
+
+	//split ccdata into rows
+	table = ccdata.split(';');
+
+	//for each row
+	for ( i = 0; i < table.length; i = i + 1 ) {
+		//split row into column attribute
+		row = table[i].split('\t');
+
+		//create object for transaction
+		GCC.transactions[i] = {
+			m: row[0],
+			d: row[1],
+			t: row[2],
+			l: row[3],
+			q: row[4],
+			f: parseInt(row[5], 10),
+            ll: row[6]
+		}
+
+		//add transactions to table
+		t = row[1].split('\/');
+		m = '#m' + t[1] + t[2];
+		$(m).append('<tr id="Tid' + i + '" onclick="GCC.showTransactionDetails.apply(this)"><td>' + row[0] + '</td><td>' + row[1] + '</td><td>' + row[2] + '</td><td>' + row[3] + '</td><td>' + row[4] + '</td></tr>');
+
+		//create nonduplicate option list by multiple overwrite
+		months[t[1]] = '<option value="' + t[1] + '' + t[2] + '">' + t[1] + '/' + t[2] + '</option>';
+
+		//hide tables
+		//$(m).hide();
+		
+		//svg transaction time (reuse var t and m)
+		m = parseFloat(row[2].replace(':', '.'), 10) / 24 * 818;
+		JSVG.createLine('gttsvg', 'bid' + i, m, 15, m, 100, 'p', {click: GCC.showTransactionDetails});
+	}
+
+	// Populate Map with markers (1 marker per city)
+
+	trans = GCC.transactions;
+	//holds locations
+	locs = {};
+
+	//create a list in locs of non-repititions of cities
+	for ( n in trans ) {
+		locs[trans[n].ll] = true;
+	}
+
+	//for each city create a marker
+	for ( ll in locs ) {
+		//in order to send a copy of n rather than a reference to it.
+		(function (ll) {
+			//create a marker at the location of the geocoded city/country
+            marker = L.marker(ll.split(',')).addTo(GCC.map);
+            marker.on('click', function(){GCC.showTransactionAtLocation(ll)});
+		}(ll));
+
+	}
+
+	//build up option string
+	ms = ''
+	for (m in months) {
+	  if (months.hasOwnProperty(m)) {
+		//concat. option strings
+		ms = ms + months[m]
+
+	  }
+	}
+
+	//add all the options
+	$('#tran_month_sel').html(ms);
+
+	//select the appropriate month
+	$('#tran_month_sel option[value=22011]').attr('selected','true')
+
+	//finish initialization (option is selected)
+	GCC.displayMonth.apply(document.getElementById('tran_month_sel'));
+
+	//create SVG chart
+	GCC.createSvgChart();
+
+}
+
+//called on page load
+GCC.pageInit = function () {
+
+
+	//create map
+	var latlng = [30, 0];
+    GCC.map = L.map('map').setView(latlng, 1); 
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OSM</a> contributors'
+    }).addTo(GCC.map);
+
+	//on selection of month call function
+	$('#tran_month_sel').change(GCC.displayMonth);
+
+    // load/format data and populate fields/etc...
+    setTimeout(GCC.loadData, 100);
+}
+
+GCC.pageInit();
+
+</script>
+</html>

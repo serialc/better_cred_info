@@ -1,0 +1,203 @@
+body {
+	background-color: #444;
+	text-align: center;
+	font-family: Georgia,Palatino,'Palatino Linotype',serif;
+	font-size: 1.1em;
+	}
+
+	
+/** main containers **/
+#cont {
+	margin: 0 auto;
+	width: 850px;
+	background-color: white;
+	text-align: left;
+	-moz-border-radius: 40px 10px;
+	border-radius: 40px 10px;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,.9);
+	-moz-box-shadow: 0 0 15px rgba(0,0,0,.9);
+	box-shadow: 0 0 15px rgba(0,0,0,.9);
+	}
+
+#header {
+	margin: 0;
+	padding: 15px 0 25px 15px;
+	height: 80px;
+	}
+
+	#header h1 {
+		background: url('../imgs/unevil.png') no-repeat;
+		width: 450px;
+		height: 104px;
+		float: left;
+		margin-right: 10px;
+		}
+	
+#main {
+	clear: both;
+	}
+
+#tinfo {
+	padding-bottom: 15px;
+}
+
+
+
+#map {
+	width: 100%;
+	height: 300px;
+	margin-bottom: 15px;
+}
+	
+.w1, .w2 {
+	clear: left;
+	width: 820px;
+	margin-left: 15px;
+	}
+	
+.w2 {
+	clear: none;
+	float: left;
+	width: 402.5px;
+	}
+	
+#footer {
+	padding: 10px 0 5px;
+	color: #666;
+	font-size: 0.7em;
+	}
+	
+/** Heading **/
+h1,h2, h3{
+	margin: 0;
+	padding: 0;
+	font-size: 2em;
+	}
+
+h2 {
+	display: block;
+	background: #aaf;
+	background: -moz-linear-gradient(#aaf, #ccf);
+	background: -webkit-gradient(linear, center top, center bottom, from(#aaf), to(#ccf)); 
+	padding: 5px 0 5px 5px;
+	margin-top: 15px;
+	font-size: 1em;
+	font-weight: bold;
+	}
+	
+	h2 span {
+		font-size: 0.6em;
+		cursor: pointer;
+		}
+	
+	h2 span:hover {
+		color: #a40;
+		}
+	
+h3 {
+	padding-top: 5px;
+	font-weight: 600;
+	font-size: 1em;
+	color: #333;
+	}
+
+/** tags **/
+a {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+}
+
+input.b {
+	width: 150px;
+	height: 30px;
+	margin: 5px 20px;
+}
+
+#tinfo img {
+	padding: 10px 30px;
+	margin: 0 5px;
+	background: #aaa;
+	background: -moz-linear-gradient(#aaa, #ccc);
+	background: -webkit-gradient(linear, center top, center bottom, from(#aaa), to(#ccc)); 
+	border: 1px solid black;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+/** Message classes **/
+
+.fraudc {
+	background-color: #f84 !important;
+	}
+.warnc {
+	background-color: #fb6 !important;
+	}
+
+.fraud, .warn {
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	display: block;
+	background-color: #f84;
+	margin: 2px 0;
+	padding: 5px;
+	}
+
+.warn {
+	background-color: #fb6;
+	}
+
+/** Misc. Styling **/
+.sbox {
+	float: left;
+	text-align: center;
+	background-color: #fa5;
+	display: block;
+	width: 163px;
+	height: 40px;
+	margin: 15px 5px;
+	padding: 15px;
+	
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+		
+	}
+
+table {
+	width: 100%;
+	font-size: 0.8em;
+	}
+
+	
+	table td {
+		padding: 3px;
+		}
+		
+	table thead tr td{
+		font-style: italic;
+		border-bottom: 1px solid black;
+	}
+	
+	table tbody tr:nth-child(odd) {
+		background-color: #eee;
+	}
+	
+	table  {
+		border-bottom: 1px solid black;
+		}
+
+	table tr {
+		cursor: pointer;
+	}
+
+	table tbody tr:hover {
+		background-color: #fa5;
+	}
+
+	table tbody tr:nth-child(odd):hover {
+		background-color: #f93;
+	}
+
+
+
